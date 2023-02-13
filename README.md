@@ -137,8 +137,73 @@ REJECT
 - EXCLUINDO UMA REGRA DO INPUT-comando -D
         sudo iptables -D INPUT 1
 
-### Salvando regras IPTABLES
+## Salvando regras IPTABLES
 
 Todas as regras criada no iptables precisam ser persistidas, pois caso o servidor reiniciar as regras atual seram perdidas.
 
 Para pode ser usado o iptables-persistent para deixar salvo as regras em um arquivo. esse servico restart as regrasa quando o servidor for reiniciado.
+
+
+## tcpdump
+
+monitoramento baseado em:
+- protocolo
+- porta
+- destino
+
+E possivel usar os operadores AND e OR
+
+e possivel armazena a captura em um arquivo e depois ler esse arquivo
+possivel filtra a captura pelo tamanho do pacote
+dizer o maximo de pacote que quer captura. depois de atigir o numero o monitoramento e fechado
+
+```bash
+Comando utilizado
+
+# Identificando as redes disponivel para o tcpdum
+sudo tcpdump -D
+
+
+# Monitorando um protocolo d euma rede especifica
+sudo tcmdump -i $interface_de_rede -p $protocolo 
+
+
+# Salvando monitramento em um arquivo
+sudo tcpdump -i $interface_de_rede -w dump-network.cap
+
+
+# Lendo o arquivo salvo
+sudo tcpdump -r dump-network.cap
+
+
+# Limitando a quantidade de pacotes capturado
+sudo tcpdump -c 20 -i $interface_de_rede
+
+
+# Filtrando monitoramento pelo tamanho do pacote em bytes
+sudo tcpdump -i $interface_de_rede greater 100
+
+
+# monitorando pela porta
+sudo tcpdum -i $interface_de_rede port $number_port
+
+
+# Monitorando trafego pelo destino
+sudo tcmpdum -i $interface_de_rede dst $ip_destino
+
+
+# Usando operador AND
+sudo tcmpdum -i $interface_de_rede dst $ip_destino and icmp
+
+
+# Usando operador OR
+sudo tcpdump -i enp0s8 dst $ip_destino and port 22 or -p icmp
+
+
+```
+
+
+
+
+[2023-02-10T15:19:36.6943+00:00] [OHS] [ERROR:32] [OH99999] [ossl] [host_id: node-http] [host_addr: 192.168.56.103] [pid: 3871] [tid: 140190542718720] [user: ivan] [VirtualHost: node-http:0] OHS:2171 NZ Library Error: Unknown error
+[2023-02-10T15:19:37.8218+00:00] [OHS] [ERROR:32] [OH99999] [ossl] [client_id: 192.168.56.103] [host_id: node-http] [host_addr: 192.168.56.103] [pid: 3871] [tid: 140190525933312] [user: ivan] [VirtualHost: node-http:0] OHS:2079 Client SSL handshake error, nzos_Handshake returned 29005(server node-http:443)
